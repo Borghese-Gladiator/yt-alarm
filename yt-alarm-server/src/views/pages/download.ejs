@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <main class="main-content columns is-fullheight">
+    <%- include('../partials/sidebar'); %>
+      <div class="column is-10">
+        <section class="columns is-desktop is-vcentered" style="min-height: 90vh; align-items: stretch; position: relative;">
+          <div class="absolute_center">
+            <section class="hero is-link">
+              <div class="hero-body">
+                <p class="title">
+                  Click to Download App
+                </p>
+                <p class="subtitle">
+                  Run APK/IPA to install on Android/iPhone
+                </p>
+              </div>
+            </section>
+          </div>
+          <a id="show_android_img" class="column" href="/images/bush.png" download="bush.png"></a>
+          <a id="show_ios_img" class="column" href="/images/bush.png" download="bush.png"></a>
+        </section>
+      </div>
+  </main>
+  <%- include('../partials/footer'); %>
+</body>
+
+</html>

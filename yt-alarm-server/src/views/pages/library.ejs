@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+
+  <main class="main-content columns is-fullheight">
+    <%- include('../partials/sidebar'); %>
+    <div class="container column is-10">
+      <section class="section">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Uploader</th>
+              <th><i class="fa fa-calendar"></i></th>
+              <th><i class="fas fa-clock"></i></th>
+              <th><i class="fas fa-link"></i></th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Uploader</th>
+              <th><i class="fa fa-calendar"></i></th>
+              <th><i class="fas fa-clock"></i></th>
+              <th><i class="fas fa-link"></i></th>
+            </tr>
+          </tfoot>
+          <tbody>
+            <% sounds.forEach(function(entry, i, entries){ %>
+              <tr>
+                <td><%= i %></td>
+                <td><%= sounds[i].title %></td>
+                <td><%= sounds[i].uploader %></td>
+                <td><%= sounds[i].dateString %></i></td>
+                <td><%= sounds[i].duration %></i></td>
+                <td><%= sounds[i].link %></i></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+  <%- include('../partials/footer'); %>
+</body>
+
+</html>

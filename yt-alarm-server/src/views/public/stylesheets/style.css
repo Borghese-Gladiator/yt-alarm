@@ -1,0 +1,70 @@
+html {
+  /* Full Page Background */
+  /*
+  background-image: url('/images/bush.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  --web-kit-background-size: cover;
+  --moz-background-size: cover;
+  --o-background-size: cover;
+  */
+  background: #2e2e2e;
+
+  margin:0;
+  padding:0;
+  min-height: calc(100vh - 3px);
+  min-width: calc(100vw - 3px);
+}
+
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.absolute_center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  
+  padding: .8em 1.2em;
+  color: white;
+  
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+#show_android_img {
+  color: white;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url('/images/android.jpg');
+  background-size: cover;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#show_android_img:hover {
+  background-image: url('/images/android.jpg');
+  background-size: cover; 
+}
+
+
+#show_ios_img {
+  color: white;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url('/images/ios.jpg');
+  background-size: cover;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#show_ios_img:hover {
+  background-image: url('/images/ios.jpg');
+  background-size: cover; 
+}

@@ -1,0 +1,34 @@
+version: "3"
+services:
+  yt-alarm-backend:
+    container_name: yt-alarm-node-server
+    build: .
+    command: npm run dev
+    volumes:
+      - "./:/usr/src/app"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    env_file: .env
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+  mongo:
+    container_name: yt-alarm-mongo-db
+    image: mongo
+    volumes:
+      - data-volume:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  data-volume: null
+  node_modules: null
+  web-root:
+    driver: local

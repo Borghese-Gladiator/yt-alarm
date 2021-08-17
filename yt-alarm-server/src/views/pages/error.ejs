@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+
+  <main class="main-content columns is-fullheight">
+    <%- include('../partials/sidebar'); %>
+    <div class="container column is-10">
+      <section class="section">
+      <div class="hero is-danger">
+        <div class="hero-body">
+          <p class="title">
+            <%= err_status %>
+          </p>
+          <p class="subtitle">
+            <%= err_msg %>
+          </p>
+        </div>
+      </div>
+      </section>
+    </div>
+  </main>
+  <%- include('../partials/footer'); %>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+
+  <main class="main-content columns is-fullheight">
+    <%- include('../partials/sidebar'); %>
+    <div class="container column is-10">
+      <section class="section">
+        <div class="hero is-success">
+          <div class="hero-body">
+            <p class="title">
+              Youtube Alarm Clock
+            </p>
+            <p class="subtitle">
+              Save MP3 Audio from YT to a cloud space - currently hosted on Google Cloud Platform
+            </p>
+          </div>
+        </div>
+        <br />
+        <div class="field is-grouped">
+          <p class="control is-expanded">
+            <input class="input" type="text" placeholder="Search your favorite music">
+          </p>
+          <p class="control">
+            <a class="button is-info" onclick="printBlah()">
+              Save Video to Cloud
+            </a>
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <%- include('../partials/footer'); %>
+</body>
+
+</html>
