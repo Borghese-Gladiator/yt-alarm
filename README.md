@@ -13,16 +13,23 @@ Manage alarms on the cloud - server saves MP3 files and mobile app syncs with se
 
 ## Setup Project
 - /server/ - holds server UI and API endpoints
+    - Express (Node.js) server
+    - EJS frontend for SSR pages
+    - OpenAPI documentation (swagger.json) at /apidocs
+    - Mongoose ORM to connect to MongoDB
+    - Docker Compose to start server & database together
 - /mobile/ - holds mobile app
 
 #### Setup Server
 Docker Setup
 1. Install Docker Desktop (windows)
 2. ```docker build -t yt-alarm-node-server:1.0 . && docker run -it -dp 8080:8080 --name yt-alarm-node-server-image yt-alarm-node-server:1.0```
+3. Open API Docs at localhost:3000/apidocs
 
 Node.js Setup
 1. Install Node.js
 2. ```cd server && npm install && npm run dev```
+3. Open API Docs at localhost:3000/apidocs
 
 #### Setup React Native app
 1. ```cd client && npm install```
