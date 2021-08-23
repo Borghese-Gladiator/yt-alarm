@@ -45,10 +45,20 @@ app.get('/download', function(req, res) {
     page_name: "download"
   });
 });
-app.get('/library', function(req, res) {
-  const videosList = videoController.getAllVideos()
+app.get('/library', async function(req, res) {
+  const videosList = await videoController.getAllVideos();
+  console.log("GET LIBRARY");
+  console.log(videosList);
+  const parsedVideosList = videosList.map((video, idx) => {
+    return {
+      ...video,
+      link: `https://www.youtube.com/watch?v=${link}`,
+      dateString: video.date.toISOString().slice(0,10).replace(/-/g,"")
+    }
+  });
+  console.log(parsedVideosList);
   res.render('pages/library', {
-    videosList: [],
+    videosList: parsedVideosList,
     page_name: "library"
   });
 });

@@ -33,14 +33,14 @@
             </tr>
           </tfoot>
           <tbody>
-            <% sounds.forEach(function(entry, i, entries){ %>
+            <% videosList.forEach((video, idx) => { %>
               <tr>
-                <td><%= i %></td>
-                <td><%= sounds[i].title %></td>
-                <td><%= sounds[i].uploader %></td>
-                <td><%= sounds[i].dateString %></i></td>
-                <td><%= sounds[i].duration %></i></td>
-                <td><%= sounds[i].link %></i></td>
+                <td><%= idx %></td>
+                <td><%= video.title %></td>
+                <td><%= video.uploader %></td>
+                <td><%= video.dateString %></td>
+                <td><%= video.duration %> seconds</td>
+                <td><%= video.link %></td>
               </tr>
             <% }) %>
           </tbody>

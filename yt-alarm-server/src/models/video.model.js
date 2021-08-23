@@ -25,7 +25,8 @@ const videoSchema = new mongoose.Schema({
   },
   link: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   localPath: {
     type: String,

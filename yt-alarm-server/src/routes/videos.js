@@ -9,29 +9,28 @@ const Video = require('../models/video.model'); // post model
 router.get('/', (req, res, next) => {
   Video.find({}, function (err, result) {
     if (err) {
-      res.status(400).json({
+      return res.status(400).json({
         'success': false,
         'error': err.message
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       'success': true,
       'data': result
     });
   });
 });
 
-module.exports = router;
 /* GET single video */
 router.get("/:post_id", (req, res, next) => {
   Video.findById(req.params.post_id, function (err, result) {
     if (err) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         error: err.message
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: result
     });
@@ -42,15 +41,6 @@ router.get("/:post_id", (req, res, next) => {
 /* POST create new video */
 router.post("/", async (req, res, next) => {
   const link = req.body.link;
-  // Check if video already exists
-  Video.findOne({ link: link }).select("link").lean().then(result => {
-    if (result) {
-      res.status(409).json({
-        success: false,
-        error: `Given video already exists - ${link}`
-      });
-    }
-  });
   try {
     const videoInfo = await ytdl.getInfo(link);
     // Saves YT video to file
@@ -63,7 +53,7 @@ router.post("/", async (req, res, next) => {
       uploader: videoInfo.videoDetails.author.name,
       date: new Date(),
       duration: videoInfo.videoDetails.lengthSeconds,
-      link: link,
+      link: videoInfo.videoDetails.videoId,
       localPath: filePath
     }
     console.log(newVideo);
@@ -71,19 +61,19 @@ router.post("/", async (req, res, next) => {
     Video.create(newVideo, function (err, result) {
       if (err) {
         console.log(err)
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
           error: err.message
         });
       }
-      res.status(201).json({
+      return res.status(201).json({
         success: true,
         data: result,
-        message: "Post created successfully"
+        message: "POST video created successfully"
       });
     });
   } catch(e) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       error: e.message
     });

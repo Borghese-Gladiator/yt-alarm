@@ -4,8 +4,11 @@ const fs = require('fs');
 const Video = require('../models/video.model'); // post model
 
 /* GET all videos */
-const getAllVideos = () => {
-  Video.find({}, function (err, result) {
+const getAllVideos = async () => {
+  const result = await Video.find({}).lean();
+  console.log(result);
+  return result;
+  await Video.find({}, {lean: true}, function (err, result) {
     if (err) {
       return {
         success: false,
@@ -23,7 +26,7 @@ const getAllVideos = () => {
 
 /* GET single video */
 const getVideo = async (post_id) => {
-  const result = Video.findById(post_id, function (err, result) {
+  const result = await Video.findById(post_id, function (err, result) {
     if (err) {
       return {
         success: false,
@@ -35,7 +38,6 @@ const getVideo = async (post_id) => {
       data: result
     };
   });
-  console.log(result);
   return result;
 };
 
@@ -81,8 +83,8 @@ const createVideo = async (link) => {
 };
 
 /* PUT update single video */
-const updateVideo = (post_id, fieldsToUpdate) => {
-  const result = Video.findByIdAndUpdate(req.params.post_id, { $set: fieldsToUpdate }, { new: true }, function (err, result) {
+const updateVideo = async (post_id, fieldsToUpdate) => {
+  const result = await Video.findByIdAndUpdate(req.params.post_id, { $set: fieldsToUpdate }, { new: true }, function (err, result) {
     if (err) {
       return {
         success: false,
@@ -100,8 +102,8 @@ const updateVideo = (post_id, fieldsToUpdate) => {
 };
 
 /* DELETE single video */
-const deleteVideo = (post_id) => {
-  const result = Video.findByIdAndDelete(req.params.post_id, function (err, result) {
+const deleteVideo = async (post_id) => {
+  const result = await Video.findByIdAndDelete(req.params.post_id, function (err, result) {
     if (err) {
       return {
         success: false,
