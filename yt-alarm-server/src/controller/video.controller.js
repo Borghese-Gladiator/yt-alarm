@@ -43,16 +43,20 @@ const getVideo = async (link) => {
 const createVideo = async (link) => {
   try {
     const alreadyExists = await Video.find({}).select({ "link": link });
+    console.debug(alreadyExists);
     if (alreadyExists) {
-      throw 'Video already exists'
+      throw new Error('Video already exists');
     }
     // Calls ytdl to get video info
     const videoInfo = await ytdl.getInfo(link);
+    console.debug(videoInfo);
     // Call ytdl to save video to file
     const filePath = path.join(__dirname, "videos", videoInfo.videoDetails.title + "__" + videoInfo.videoDetails.videoId + ".mp4");
+    console.debug(filePath);
     ytdl(link, {
       format: "mp4"
     }).pipe(fs.createWriteStream(filePath, { flags: "a" }));
+    console.debug("ytdl-core video download complete");
     const newVideo = {
       title: videoInfo.videoDetails.title,
       uploader: videoInfo.videoDetails.author,
@@ -61,9 +65,10 @@ const createVideo = async (link) => {
       link: link,
       localPath: filePath
     }
+    console.debug(newVideo);
     // Saves newVideo to MongoDB through Mongoose
     const result = await Video.save(newVideo);  
-    console.debug(result)
+    console.debug(result);
     return {
       success: true,
       data: result
