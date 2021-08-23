@@ -66,7 +66,7 @@ const createVideo = async (link) => {
     console.info(result)
     return {
       success: true,
-      error: result
+      data: result
     };
   } catch (e) {
     console.error(e.message);
