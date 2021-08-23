@@ -1,117 +1,85 @@
 const express = require('express');
 const router = express.Router();
-const ytdl = require('ytdl-core');
-const fs = require('fs');
-const path = require('path');
-const Video = require('../models/video.model'); // post model
+const videoController = require('../controller/video.controller');
+const Video = require('../models/video.model');
 
 /* GET all videos */
 router.get('/', (req, res, next) => {
-  Video.find({}, function (err, result) {
-    if (err) {
-      return res.status(400).json({
-        'success': false,
-        'error': err.message
-      });
-    }
-    return res.status(200).json({
-      'success': true,
-      'data': result
+  const result = videoController.getAllVideos();
+  if (!result.success) {
+    return res.status(400).json({
+      success: false,
+      error: result.error
     });
+  }
+  return res.status(200).json({
+    'success': true,
+    'data': result.data
   });
 });
 
 /* GET single video */
-router.get("/:post_id", (req, res, next) => {
-  Video.findById(req.params.post_id, function (err, result) {
-    if (err) {
-      return res.status(400).json({
-        success: false,
-        error: err.message
-      });
-    }
-    return res.status(200).json({
-      success: true,
-      data: result
+router.get("/:link", (req, res, next) => {
+  const link = req.params.link;
+  const result = videoController.getVideo(link);
+  if (!result.success) {
+    return res.status(400).json({
+      success: false,
+      error: result.error
     });
+  }
+  return res.status(200).json({
+    'success': true,
+    'data': result.data
   });
 });
 
-
 /* POST create new video */
 router.post("/", async (req, res, next) => {
-  const link = req.body.link;
-  try {
-    const videoInfo = await ytdl.getInfo(link);
-    // Saves YT video to file
-    const filePath = path.join(__dirname, "..", "videos", videoInfo.videoDetails.title + "__" + videoInfo.videoDetails.videoId + ".mp4");
-    ytdl(link, {
-      format: "mp4"
-    }).pipe(fs.createWriteStream(filePath, { flags: "a" }));
-    const newVideo = {
-      title: videoInfo.videoDetails.title,
-      uploader: videoInfo.videoDetails.author.name,
-      date: new Date(),
-      duration: videoInfo.videoDetails.lengthSeconds,
-      link: videoInfo.videoDetails.videoId,
-      localPath: filePath
-    }
-    console.log(newVideo);
-    // Saves newVideo to MongoDB through Mongoose
-    Video.create(newVideo, function (err, result) {
-      if (err) {
-        console.log(err)
-        return res.status(400).json({
-          success: false,
-          error: err.message
-        });
-      }
-      return res.status(201).json({
-        success: true,
-        data: result,
-        message: "POST video created successfully"
-      });
-    });
-  } catch(e) {
+  const link = req.params.link;
+  const result = videoController.createVideo(link);
+  if (!result.success) {
     return res.status(400).json({
       success: false,
-      error: e.message
+      error: result.error
     });
   }
+  return res.status(200).json({
+    'success': true,
+    'data': result.data
+  });
 });
 
 /* PUT edit single video */
-router.put("/:post_id", (req, res, next) => {
-  let fieldsToUpdate = req.body;
-  Video.findByIdAndUpdate(req.params.post_id, { $set: fieldsToUpdate }, { new: true }, function (err, result) {
-    if (err) {
-      res.status(400).json({
-        success: false,
-        error: err.message
-      });
-    }
-    res.status(200).json({
-      success: true,
-      data: result,
-      message: "Post updated successfully"
+router.put("/:link", (req, res, next) => {
+  const link = req.params.link;
+  const fieldsToUpdate = req.body;
+  const result = videoController.updateVideo(link, fieldsToUpdate);
+  if (!result.success) {
+    return res.status(400).json({
+      success: false,
+      error: result.error
     });
+  }
+  return res.status(200).json({
+    'success': true,
+    'data': result.data
   });
 });
 
 /* DELETE single video */
-router.delete("/:post_id", (req, res, next) => {
-  Video.findByIdAndDelete(req.params.post_id, function (err, result) {
-    if (err) {
-      res.status(400).json({
-        success: false,
-        error: err.message
-      });
-    }
-    res.status(200).json({
-      success: true,
-      data: result,
-      message: "Post deleted successfully"
+router.delete("/:link", (req, res, next) => {
+  const link = req.params.link;
+  const result = videoController.deleteVideo(link);
+  if (!result.success) {
+    return res.status(400).json({
+      success: false,
+      error: result.error
     });
+  }
+  return res.status(200).json({
+    'success': true,
+    'data': result.data
   });
 });
 
