@@ -5,7 +5,11 @@ const { NODE_ENV } = process.env;
 
 // GET verify API works
 router.get('/', function (req, res, next) {
-  res.send('test api response');
+  res.status(200).json({
+    description: "CRUD videos on yt-alarm-server",
+    name: "yt-alarm-server",
+    version: "1.0.0"
+  });
 });
 
 // GET api documentation
