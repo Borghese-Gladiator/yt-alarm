@@ -7,7 +7,7 @@ const Video = require('../models/video.model'); // post model
 const getAllVideos = async () => {
   try {
     const result = await Video.find({}).lean();
-    console.info(result);
+    console.debug(result);
     return {
       success: true,
       data: result
@@ -24,8 +24,8 @@ const getAllVideos = async () => {
 /* GET single video */
 const getVideo = async (link) => {
   try {
-    const result = await Video.find({ link: link }).lean();
-    console.info(result);
+    const result = await Video.findOne({ link: link }).lean();
+    console.debug(result);
     return {
       success: true,
       data: result
@@ -63,7 +63,7 @@ const createVideo = async (link) => {
     }
     // Saves newVideo to MongoDB through Mongoose
     const result = await Video.save(newVideo);  
-    console.info(result)
+    console.debug(result)
     return {
       success: true,
       data: result
@@ -81,7 +81,7 @@ const createVideo = async (link) => {
 const updateVideo = async (link, fieldsToUpdate) => {
   try {
     const result = await Video.findOneAndUpdate({ link: link }, { $set: fieldsToUpdate });
-    console.info(result);
+    console.debug(result);
     return {
       success: true,
       data: result
@@ -98,8 +98,8 @@ const updateVideo = async (link, fieldsToUpdate) => {
 /* DELETE single video */
 const deleteVideo = async (link) => {
   try {
-    const result = await Video.findOneAndDelete({ link: link });
-    console.info(result);
+    const result = await Video.findOneAndDelete({ link: link }).exec();
+    console.debug(result);
     return {
       success: true,
       data: result
