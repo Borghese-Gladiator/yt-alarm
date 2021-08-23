@@ -36,7 +36,7 @@ router.get("/:link", async (req, res, next) => {
 
 /* POST create new video */
 router.post("/", async (req, res, next) => {
-  const link = req.params.link;
+  const link = req.body.link;
   const result = await videoController.createVideo(link);
   if (!result.success) {
     return res.status(400).json({
