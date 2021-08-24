@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node src/app.js | pino-text-level-transport",
-    "dev": "nodemon -L ./src/app.js | pino-text-level-transport"
+    "dev": "nodemon -L ./src/app.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
