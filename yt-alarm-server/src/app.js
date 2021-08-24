@@ -47,10 +47,12 @@ app.get('/download', function(req, res) {
   });
 });
 app.get('/library', async function(req, res) {
+  // query database for video list
   const result = await videoController.getAllVideos();
   if (!result.success) {
     throw new Exception(result.error)
   }
+
   // Convert dates into string to display
   const parsedVideosList = result.data.map((video, idx) => {
     return {
@@ -60,14 +62,13 @@ app.get('/library', async function(req, res) {
     }
   });
   logger.debug(parsedVideosList);
+  
+  // Display page
   res.render('pages/library', {
     videosList: parsedVideosList,
     page_name: "library"
   });
 });
-app.post('/test', (req, res) => {
-  res.json({requestBody: req.body})
-})
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -76,6 +77,7 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
+  // log URL user tried to access
   const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   logger.debug({ fullUrl }, 'User tried to access non-existent endpoint')
   
