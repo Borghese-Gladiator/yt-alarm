@@ -43,6 +43,12 @@ Node.js Setup
 - React Native - cross-platform JavaScript library to create mobile native components
 - Amazon AWS S3 reduced redundancy storage - stores MP3 files - https://stackoverflow.com/questions/11958465/what-is-best-way-to-store-mp3-files-in-server-storing-it-in-database-blob
 
+## Third-Party Packages
+#### Server
+- express - server framework to build REST APIs
+- pino - json logger library (used to configure DEV logs vs PRD logs)
+- pino-text-level-transport - middleware transport for pino that transforms the "level" field into a string
+
 ## Project Creation Steps
 1. ```mkdir client && mkdir server```
 2. setup Node.js backend
@@ -50,7 +56,7 @@ Node.js Setup
     2. ```touch .env .dockerignore app.js Dockerfile```
     3. ```npm init -y```
     4. write basic Express app in app.js
-    5. ```npm install express cors http-errors ejs bulma mongoose dotenv ytdl-core```
+    5. ```npm install express cors http-errors ejs bulma mongoose dotenv ytdl-core pino pino-text-level-transport uuid```
     6. ```npm install -D nodemon swagger-ui-express```
     7. add nodemon dev command - ```"dev": "nodemon app.js"``` (uses chokidar polling)
     8. write basic Node.js Dockerfile
@@ -69,3 +75,4 @@ Node.js Setup
 Project Setup - https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes
 Setting up Swagger - https://levelup.gitconnected.com/how-to-add-swagger-ui-to-existing-node-js-and-express-js-project-2c8bad9364ce
 Understanding OpenAPI - https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md
+Setting up logging - https://blog.logrocket.com/logging-with-pino-and-asynclocalstorage-in-node-js/
