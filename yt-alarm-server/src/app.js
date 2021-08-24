@@ -35,22 +35,27 @@ app.use(contextMiddleware); // Attach a unique request ID to every log line
 app.use('/api', indexRouter);
 app.use('/api/videos', videosRouter);
 
+
 // PAGES
-app.get('/', function(req, res) {
+app.get('*', (req, res, next) => {
+  logger.debug({ url: req.baseUrl + req.path, httpMethod: req.method }, 'Endpoint accessed');
+  next();
+})
+app.get('/', function (req, res) {
   res.render('pages/index', {
     page_name: "home"
   });
 });
-app.get('/download', function(req, res) {
+app.get('/download', function (req, res) {
   res.render('pages/download', {
     page_name: "download"
   });
 });
-app.get('/library', async function(req, res) {
+app.get('/library', async function (req, res) {
   // query database for video list
   const result = await videoController.getAllVideos();
   if (!result.success) {
-    throw new Exception(result.error)
+    throw new Error(result.error)
   }
 
   // Convert dates into string to display
@@ -58,11 +63,11 @@ app.get('/library', async function(req, res) {
     return {
       ...video,
       link: `https://www.youtube.com/watch?v=${video.link}`,
-      dateString: video.date.toISOString().slice(0,10).replace(/-/g,"")
+      dateString: video.date.toISOString().slice(0, 10).replace(/-/g, "")
     }
   });
-  logger.debug(parsedVideosList);
-  
+  logger.debug({ parsedVideosList }, 'Parsed video list from library page');
+
   // Display page
   res.render('pages/library', {
     videosList: parsedVideosList,
@@ -72,15 +77,15 @@ app.get('/library', async function(req, res) {
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
+  // log URL user tried to access
+  const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  logger.info({ url: fullUrl, httpMethod: req.method }, 'Non-existent endpoint called by user');
+
   next(createError(404));
 });
 
 // error handler
 app.use((err, req, res, next) => {
-  // log URL user tried to access
-  const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-  logger.debug({ fullUrl }, 'User tried to access non-existent endpoint')
-  
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
