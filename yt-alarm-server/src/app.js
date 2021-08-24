@@ -47,17 +47,19 @@ app.get('/download', function(req, res) {
   });
 });
 app.get('/library', async function(req, res) {
-  const videosList = await videoController.getAllVideos();
-  console.log("GET LIBRARY");
-  console.log(videosList);
-  const parsedVideosList = videosList.map((video, idx) => {
+  const result = await videoController.getAllVideos();
+  if (!result.success) {
+    throw new Exception(result.error)
+  }
+  // Convert dates into string to display
+  const parsedVideosList = result.data.map((video, idx) => {
     return {
       ...video,
-      link: `https://www.youtube.com/watch?v=${link}`,
+      link: `https://www.youtube.com/watch?v=${video.link}`,
       dateString: video.date.toISOString().slice(0,10).replace(/-/g,"")
     }
   });
-  console.log(parsedVideosList);
+  logger.debug(parsedVideosList);
   res.render('pages/library', {
     videosList: parsedVideosList,
     page_name: "library"
