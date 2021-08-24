@@ -8,10 +8,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // CONSTANTS
-const PORT = process.env.PORT || 3000;
+const { logger, contextMiddleware } = require('./logging/logger');
 const videoController = require('./controller/video.controller');
 const indexRouter = require('./routes/index');
 const videosRouter = require('./routes/videos');
+const PORT = process.env.PORT || 3000;
 
 // APP
 const app = express();
@@ -28,7 +29,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'views', 'public')));
-
+app.use(contextMiddleware); // Attach a unique request ID to every log line
 
 // ROUTES
 app.use('/api', indexRouter);
@@ -73,6 +74,9 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
+  const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+  logger.debug({ fullUrl }, 'User tried to access non-existent endpoint')
+  
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -87,5 +91,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Example app listening at http://localhost:${PORT}`)
+  logger.info(`Example app listening at http://localhost:${PORT}`)
 })

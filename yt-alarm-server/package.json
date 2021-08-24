@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon -L ./src/app.js"
+    "start": "node src/app.js | pino-text-level-transport",
+    "dev": "nodemon -L ./src/app.js | pino-text-level-transport"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -13,6 +13,9 @@
     "express": "^4.16.4",
     "http-errors": "^1.8.0",
     "mongoose": "^5.13.7",
+    "pino": "^6.13.1",
+    "pino-text-level-transport": "^1.0.1",
+    "uuid": "^8.3.2",
     "ytdl-core": "^4.9.1"
   },
   "devDependencies": {
