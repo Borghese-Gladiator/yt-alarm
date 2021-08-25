@@ -11,12 +11,6 @@
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "tags": [
-    {
-      "name": "Video",
-      "description": "API for Video in the system"
-    }
-  ],
   "schemes": [
     "http"
   ],
@@ -40,7 +34,7 @@
     "/api/videos": {
       "get": {
         "tags": ["Video"],
-        "summary": "Get all Video in system",
+        "summary": "GET ALL videos",
         "responses": {
           "200": {
             "description": "OK",
@@ -52,12 +46,11 @@
       },
       "post": {
         "tags": ["Video"],
-        "description": "Create new video in system",
+        "summary": "CREATE new video",
         "parameters": [
           {
             "name": "video",
             "in": "body",
-            "description": "User that we want to create",
             "schema": {
               "$ref": "#/definitions/Video"
             }
@@ -66,7 +59,6 @@
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "New video is created",
             "schema": {
               "$ref": "#/definitions/Video"
             }
@@ -77,24 +69,16 @@
     "/api/videos/{link}": {
       "parameters": [
         {
-          "name": "id",
+          "name": "link",
           "in": "path",
           "required": true,
-          "description": "ID of video that we want to find",
-          "type": "integer"
+          "type": "string",
+          "description": "Unique video link to search for"
         }
       ],
       "get": {
         "tags": ["Video"],
         "summary": "GET a video",
-        "parameters": {
-          "name": "link",
-          "schema": {
-            "type": "integer"
-          },
-          "required": true,
-          "description": "unique youtube link"
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -149,46 +133,40 @@
     }
   },
   "definitions": {
-    "User": {
+    "Video": {
       "required": [
-        "name",
-        "_id",
-        "companies"
+        "link",
+        "title",
+        "uploader",
+        "date",
+        "duration",
+        "localPath"
       ],
       "properties": {
-        "_id": {
-          "type": "integer",
+        "link": {
+          "type": "string",
           "uniqueItems": true
         },
-        "isPublic": {
-          "type": "boolean"
-        },
-        "name": {
+        "title": {
           "type": "string"
         },
-        "books": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "amount": {
-                "type": "number"
-              }
-            }
-          }
+        "uploader": {
+          "type": "string"
         },
-        "companies": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        "date": {
+          "type": "date",
+          "pattern": "/([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/",
+          "example": "2019-05-17"
+        },
+        "duration": {
+          "type": "integer"
+        },
+        "localPath": {
+          "type": "string"
         }
       }
     },
-    "Video": {
+    "Videos": {
       "type": "array",
       "$ref": "#/definitions/Video"
     }
