@@ -92,7 +92,7 @@
             "in": "body",
             "description": "User with new values of properties",
             "schema": {
-              "$ref": "#/definitions/updateUser"
+              "$ref": "#/definitions/Video"
             }
           }
         ],
@@ -111,7 +111,7 @@
         "parameters": {
           "name": "link",
           "schema": {
-            "type": "integer"
+            "type": "string"
           },
           "required": true,
           "description": "unique youtube link"
