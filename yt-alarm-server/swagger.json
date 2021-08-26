@@ -11,13 +11,21 @@
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "schemes": ["http"],
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "/api": {
       "get": {
-        "tags": ["Video"],
+        "tags": [
+          "Video"
+        ],
         "summary": "Verify api works",
         "responses": {
           "200": {
@@ -28,7 +36,9 @@
     },
     "/api/videos": {
       "get": {
-        "tags": ["Video"],
+        "tags": [
+          "Video"
+        ],
         "summary": "GET ALL videos",
         "responses": {
           "200": {
@@ -40,43 +50,26 @@
         }
       },
       "post": {
-        "tags": ["Video"],
+        "tags": [
+          "Video"
+        ],
         "summary": "CREATE new video",
         "parameters": [
           {
-            "name": "video",
+            "name": "link",
             "in": "body",
+            "description": "Unique video link on Youtube",
+            "required": true,
             "schema": {
-              "$ref": "#/definitions/Video"
+              "$ref": "#/definitions/LinkBody"
             }
           }
         ],
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
-            "schema": {
-              "$ref": "#/definitions/Video"
-            }
-          }
-        }
-      }
-    },
-    "/api/videos/{link}": {
-      "parameters": [
-        {
-          "name": "link",
-          "in": "path",
-          "required": true,
-          "type": "string",
-          "description": "Unique video link to search for"
-        }
-      ],
-      "get": {
-        "tags": ["Video"],
-        "summary": "GET a video",
-        "responses": {
-          "200": {
-            "description": "OK",
             "schema": {
               "$ref": "#/definitions/Video"
             }
@@ -84,13 +77,15 @@
         }
       },
       "put": {
-        "tags": ["Video"],
+        "tags": [
+          "Video"
+        ],
         "summary": "UPDATE a video",
         "parameters": [
           {
             "name": "video",
             "in": "body",
-            "description": "User with new values of properties",
+            "description": "Video with new values of properties",
             "schema": {
               "$ref": "#/definitions/Video"
             }
@@ -106,16 +101,22 @@
         }
       },
       "delete": {
-        "tags": ["Video"],
+        "tags": [
+          "Video"
+        ],
         "summary": "DELETE a single video",
-        "parameters": {
-          "name": "link",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "description": "unique youtube link"
-        },
+        "parameters": [
+          {
+            "name": "link",
+            "schema": {
+              "type": "string",
+              "example": "T_17vRAsbOs",
+              "defaut": "T_17vRAsbOs"
+            },
+            "required": true,
+            "description": "unique youtube link"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -135,30 +136,46 @@
       "properties": {
         "link": {
           "type": "string",
-          "uniqueItems": true
+          "uniqueItems": true,
+          "example": "T_17vRAsbOs"
         },
         "title": {
-          "type": "string"
+          "type": "string",
+          "example": "Falling Down - Not Economically Viable (1080p)"
         },
         "uploader": {
-          "type": "string"
+          "type": "string",
+          "example": "JackBauer137"
         },
         "date": {
           "type": "date",
           "pattern": "/([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/",
-          "example": "2019-05-17"
+          "example": "2021-08-23T19:31:10.131Z"
         },
         "duration": {
-          "type": "integer"
+          "type": "integer",
+          "example": 114
         },
         "localPath": {
-          "type": "string"
+          "type": "string",
+          "example": "/usr/src/app/src/videos/Falling Down - Not Economically Viable (1080p)__T_17vRAsbOs.mp4"
         }
       }
     },
     "Videos": {
       "type": "array",
       "$ref": "#/definitions/Video"
+    },
+    "LinkBody": {
+      "required": [
+        "link"
+      ],
+      "properties": {
+        "link": {
+          "type": "string",
+          "example": "T_17vRAsbOs"
+        }
+      }
     }
   }
 }
