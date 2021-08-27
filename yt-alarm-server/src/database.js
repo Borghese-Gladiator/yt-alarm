@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// mongoose options
+// Mongoose options
 const options = {
   useNewUrlParser: true,
   useFindAndModify: false,
@@ -11,20 +11,26 @@ const options = {
   bufferMaxEntries: 0
 };
 
-// mongodb environment variables
+// MongoDB environment variables
 const {
   MONGO_HOSTNAME,
   MONGO_DB,
-  MONGO_PORT
+  MONGO_PORT,
+  NODE_ENV
 } = process.env;
 
 const dbConnectionURL = {
-  'LOCALURL': `mongodb://${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}`
+  'LOCALURL': `mongodb://${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}`,
+  'CLOUDURL': `mongodb://${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}`
 };
-mongoose.connect(dbConnectionURL.LOCALURL, options);
+if (NODE_ENV == "development") {
+  mongoose.connect(dbConnectionURL.LOCALURL, options);
+} else {
+  mongoose.connect(dbConnectionURL.CLOUDURL, options);
+}
+
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Mongodb Connection Error:' + dbConnectionURL.LOCALURL));
 db.once('open', () => {
-  // we're connected !
   console.log('Mongodb Connection Successful');
 });
