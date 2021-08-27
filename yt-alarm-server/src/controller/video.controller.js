@@ -1,19 +1,17 @@
-const ytdl = require('ytdl-core');
-const path = require('path');
-const fs = require('fs');
-const Video = require('../models/video.model'); // post model
+const { logger } = require('../logging/logger');
+const Video = require('../models/video.model');
 
 /* GET all videos */
 const getAllVideos = async () => {
   try {
     const result = await Video.find({}).lean();
-    console.debug(result);
+    logger.debug(result);
     return {
       success: true,
       data: result
     };
   } catch (e) {
-    console.error(e.message);
+    logger.error(e.message);
     return {
       success: false,
       error: e.message
@@ -25,13 +23,13 @@ const getAllVideos = async () => {
 const getVideo = async (link) => {
   try {
     const result = await Video.findOne({ link: link }).lean();
-    console.debug(result);
+    logger.debug(result);
     return {
       success: true,
       data: result
     };
   } catch (e) {
-    console.error(e.message);
+    logger.error(e.message);
     return {
       success: false,
       error: e.message
@@ -42,39 +40,23 @@ const getVideo = async (link) => {
 /* POST create new video */
 const createVideo = async (link) => {
   try {
-    const alreadyExists = await Video.find({}).select({ "link": link });
-    console.debug(alreadyExists);
+    const alreadyExists = await Video.exists({ "link": link });
     if (alreadyExists) {
       throw new Error('Video already exists');
     }
-    // Calls ytdl to get video info
-    const videoInfo = await ytdl.getInfo(link);
-    console.debug(videoInfo);
     // Call ytdl to save video to file
-    const filePath = path.join(__dirname, "videos", videoInfo.videoDetails.title + "__" + videoInfo.videoDetails.videoId + ".mp4");
-    console.debug(filePath);
-    ytdl(link, {
-      format: "mp4"
-    }).pipe(fs.createWriteStream(filePath, { flags: "a" }));
-    console.debug("ytdl-core video download complete");
-    const newVideo = {
-      title: videoInfo.videoDetails.title,
-      uploader: videoInfo.videoDetails.author,
-      date: new Date(),
-      duration: videoInfo.videoDetails.lengthSeconds,
-      link: link,
-      localPath: filePath
-    }
-    console.debug(newVideo);
+    const videoUtils = require('./video.utils');
+    const newVideo = await videoUtils.createNewVideo(link);
+    logger.debug({ newVideo }, "Initialized new video object");
     // Saves newVideo to MongoDB through Mongoose
-    const result = await Video.save(newVideo);  
-    console.debug(result);
+    const result = await Video.create(newVideo);
+    logger.debug({ result }, "Mongoose result from creating video");
     return {
       success: true,
       data: result
     };
   } catch (e) {
-    console.error(e.message);
+    logger.error({ e }, "ERROR in create video ");
     return {
       success: false,
       error: e.message
@@ -86,16 +68,16 @@ const createVideo = async (link) => {
 const updateVideo = async (link, fieldsToUpdate) => {
   try {
     const result = await Video.findOneAndUpdate({ link: link }, { $set: fieldsToUpdate });
-    console.debug(result);
+    logger.debug(result);
     return {
       success: true,
       data: result
     };
   } catch (e) {
-    console.error(e.message);
+    logger.error(e.message);
     return {
       success: false,
-      error: e.message
+      error: e
     };
   };
 };
@@ -104,13 +86,13 @@ const updateVideo = async (link, fieldsToUpdate) => {
 const deleteVideo = async (link) => {
   try {
     const result = await Video.findOneAndDelete({ link: link }).exec();
-    console.debug(result);
+    logger.debug(result);
     return {
       success: true,
       data: result
     };
   } catch (e) {
-    console.error(e.message);
+    logger.error(e.message);
     return {
       success: false,
       error: e.message
