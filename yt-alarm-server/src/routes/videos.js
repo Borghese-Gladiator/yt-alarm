@@ -8,7 +8,7 @@ router.get("/", async (req, res, next) => {
   const result = await videoController.getAllVideos();
   if (!result.success) {
     logger.info({ result }, "Failed query for GET ALL videos");
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
       error: result.error
     });
@@ -25,7 +25,7 @@ router.post("/", async (req, res, next) => {
   const result = await videoController.createVideo(link);
   if (!result.success) {
     logger.info({ result }, "Failed query for CREATE video");
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
       error: result.error
     });
@@ -46,6 +46,13 @@ router.get("/:link", async (req, res, next) => {
       success: false,
       error: result.error
     });
+  }
+  if (result.data == null) {
+    return res.status(204).json({
+      success: true,
+      data: result.data,
+      message: "No content found"
+    });  
   }
   return res.status(200).json({
     success: true,
