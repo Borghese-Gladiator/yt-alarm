@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node src/app.js | pino-text-level-transport",
-    "dev": "nodemon -L ./src/app.js"
+    "dev": "nodemon -L ./src/app.js",
+    "test": "jest"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -19,6 +20,7 @@
     "ytdl-core": "^4.9.1"
   },
   "devDependencies": {
+    "jest": "^27.0.6",
     "nodemon": "^2.0.12",
     "swagger-ui-express": "^4.1.6"
   }
