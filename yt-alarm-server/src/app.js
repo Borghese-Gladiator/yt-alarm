@@ -41,7 +41,7 @@ app.get('*', (req, res, next) => {
   logger.debug({ url: req.baseUrl + req.path, httpMethod: req.method }, 'Endpoint accessed');
   next();
 })
-app.get('/', function (req, res) {
+app.get('/', async (req, res) => {
   // query database for video list
   const result = await videoController.getAllVideos();
   if (!result.success) {
@@ -69,7 +69,7 @@ app.get('/', function (req, res) {
     page_name: "home"
   });
 });
-app.get('/download', function (req, res) {
+app.get('/download', (req, res) => {
   res.render('pages/download', {
     page_name: "download"
   });
@@ -86,10 +86,6 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // render the error page
   res.status(err.status || 500);
   res.render('pages/error', {
