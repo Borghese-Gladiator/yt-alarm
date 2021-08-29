@@ -33,6 +33,64 @@
           </p>
         </div>
       </section>
+      <section class="section">
+        <h1 class="title">Library</h1>
+        <h2 class="subtitle">Collection of Saved MP3 Files</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Uploader</th>
+              <th><i class="fa fa-calendar"></i></th>
+              <th><i class="fas fa-clock"></i></th>
+              <th><i class="fas fa-link"></i></th>
+              <th><i class="fas fa-trash-alt"></i></th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Uploader</th>
+              <th><i class="fa fa-calendar"></i></th>
+              <th><i class="fas fa-clock"></i></th>
+              <th><i class="fas fa-link"></i></th>
+              <th><i class="fas fa-trash-alt"></i></th>
+            </tr>
+          </tfoot>
+          <tbody>
+            <% videosList.forEach((video, idx)=> { %>
+              <tr>
+                <td>
+                  <%= idx %>
+                </td>
+                <td>
+                  <%= video.title %>
+                </td>
+                <td>
+                  <%= video.uploader %>
+                </td>
+                <td>
+                  <%= video.dateString %>
+                </td>
+                <td>
+                  <%= video.duration %> seconds
+                </td>
+                <td>
+                  <a target="_blank" rel="noopener noreferrer" href="<%= video.link %>">
+                    <%= video.link %>
+                  </a>
+                </td>
+                <td>
+                  <button class="button is-danger" onclick="deleteVideo(<% video.link %>)"><i
+                      class="fas fa-trash-alt"></i></button>
+                </td>
+              </tr>
+              <% }) %>
+          </tbody>
+        </table>
+      </section>
     </div>
   </main>
   <%- include('../partials/footer'); %>

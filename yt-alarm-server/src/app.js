@@ -42,16 +42,6 @@ app.get('*', (req, res, next) => {
   next();
 })
 app.get('/', function (req, res) {
-  res.render('pages/index', {
-    page_name: "home"
-  });
-});
-app.get('/download', function (req, res) {
-  res.render('pages/download', {
-    page_name: "download"
-  });
-});
-app.get('/library', async function (req, res) {
   // query database for video list
   const result = await videoController.getAllVideos();
   if (!result.success) {
@@ -76,7 +66,12 @@ app.get('/library', async function (req, res) {
   // Display page
   res.render('pages/library', {
     videosList: parsedVideosList,
-    page_name: "library"
+    page_name: "home"
+  });
+});
+app.get('/download', function (req, res) {
+  res.render('pages/download', {
+    page_name: "download"
   });
 });
 
