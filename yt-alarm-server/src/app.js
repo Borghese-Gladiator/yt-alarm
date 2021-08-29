@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 // Our DB Configuration
-require('./database');
+require('./db/database');
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -50,7 +50,7 @@ app.get('/', function (req, res) {
 
   // populate database
   if (result.data.length === 0) {
-    require('./dbSeeder.js')
+    require('./db/dbSeeder.js')
   }
 
   // Convert dates into string to display
