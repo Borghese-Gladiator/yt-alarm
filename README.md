@@ -78,6 +78,10 @@ Node.js Setup
             1. ```docker build -t yt-alarm-node-server:1.0 .```
             2. ```docker run -d -p 3000:3000 --name yt-alarm-node-server-image yt-alarm-node-server:1.0```
     11. Write OpenAPI specification in swagger.json using [https://editor.swagger.io/]
+    12. Added Jest unit tests
+        1. ```npm i -D jest && mkdir tests/api tests/gui```
+        2. ```cd tests/api && touch videos.test.js```
+        3. ```cd tests/gui && touch homePage.test.js libraryPage.test.js downloadPage.test.js errorPage.test.js```
 3. setup React Native app
 
 ## References
