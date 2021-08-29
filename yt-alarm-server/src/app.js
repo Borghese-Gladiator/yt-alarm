@@ -58,6 +58,11 @@ app.get('/library', async function (req, res) {
     throw new Error(result.error)
   }
 
+  // populate database
+  if (result.data.length === 0) {
+    require('./dbSeeder.js')
+  }
+
   // Convert dates into string to display
   const parsedVideosList = result.data.map((video, idx) => {
     return {
